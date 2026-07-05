@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mehdi Maramzi — God Mode</title>
+
+  <!-- فونت -->
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <!-- Three.js برای WebGL -->
+  <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #05060a;
+      color: #fff;
+      font-family: 'Vazirmatn', sans-serif;
+      overflow: hidden;
+    }
+
+    /* کانواس WebGL پس‌زمینه */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* لایه تاریک روی WebGL */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 30%, rgba(0,0,0,0.4), transparent 60%),
+                  radial-gradient(circle at 80% 70%, rgba(0,0,0,0.6), transparent 60%);
+      z-index: 1;
+    }
+
+    /* HERO سینمایی */
+    .hero {
+      position: relative;
+      z-index: 2;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero-inner {
+      max-width: 700px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: heroIntro 1.8s ease-out forwards;
+      animation-delay: 1s;
+    }
+
+    @keyframes heroIntro {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 25px rgba(0,245,255,0.7);
+      margin-bottom: 20px;
+      animation: float 4s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0); }
+    }
+
+    .name {
+      font-size: 40px;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
+
+    .role {
+      font-size: 18px;
+      margin-top: 8px;
+      color: #cfd3ff;
+    }
+
+    .intro {
+      margin-top: 18px;
+      font-size: 15px;
+      line-height: 1.9;
+      color: #d0d0e6;
+    }
+
+    .intro span {
+      color: #00f5ff;
+      font-weight: 700;
+    }
+
+    .btn {
+      margin-top: 22px;
+      padding: 12px 26px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #00f5ff, #ff00ff);
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 22px rgba(0,245,255,0.6);
+    }
+
+    /* بخش‌ها */
+    .section {
+      position: relative;
+      z-index: 2;
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .section h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .section p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: #d0d0e6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: rgba(11,12,18,0.9);
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 0 22px rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+    }
+
+    .card h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #00f5ff;
+    }
+
+    .card p {
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 2;
+      padding: 30px;
+      text-align: center;
+      color: #9ea4ff;
+      font-size: 13px;
+    }
+
+    /* تعامل صوتی */
+    .voice-status {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #00f5ff;
+    }
+
+    .locked {
+      filter: blur(4px);
+      pointer-events: none;
+      opacity: 0.4;
+      transition: 0.6s;
+    }
+
+    .unlocked {
+      filter: none;
+      pointer-events: auto;
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+      .avatar { width: 130px; height: 130px; }
+      .name { font-size: 30px; }
+      .role { font-size: 15px; }
+      .intro { font-size: 13px; }
+      .section h3 { font-size: 20px; }
+      .section p { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WebGL پس‌زمینه -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="overlay"></div>
+
+  <!-- HERO با ورود سینمایی و تعامل صوتی -->
+  <header class="hero">
+    <div class="hero-inner hero-content locked" id="heroContent">
+      <img src="avatar.jpg" class="avatar" alt="Mehdi Maramzi">
+
+      <h1 class="name">مهدی مرمزی</h1>
+      <h2 class="role">Programmer • Polyglot • Human System Architect</h2>
+
+      <p class="intro">
+        مسلط به <span>عربی</span>، <span>انگلیسی</span> و <span>روسی</span>.  
+        این صفحه معرفی نیست؛ یک **سیستم God Mode انسانی** است.
+      </p>
+
+      <button class="btn" id="voiceBtn">شروع با صدای تو</button>
+      <div class="voice-status" id="voiceStatus">
+        برای باز شدن تجربه، کلمه «مهدی» را با صدای خودت بگو.
+      </div>
+    </div>
+  </header>
+
+  <!-- بخش‌ها (قفل تا قبل از صوت) -->
+  <section id="core" class="section locked">
+    <h3>Core Logic — منطق مرکزی</h3>
+    <p>
+      هر انسان یک سیستم است؛ اما فقط برخی، سیستم خود را طراحی می‌کنند.
+      این پروژه تلاش می‌کند نشان دهد چگونه یک ذهن، می‌تواند ساختارهای
+      زبان، منطق، زیبایی و تکنولوژی را در یک واحد یکپارچه تبدیل کند.
+    </p>
+  </section>
+
+  <section id="languages" class="section cards locked">
+    <h3>Polyglot Intelligence</h3>
+
+    <div class="grid">
+      <div class="card">
+        <h4>Arabic</h4>
+        <p>زبان سیالیت؛ جایی که ساختارها مثل خط عربی، نرم، دقیق و شاعرانه‌اند.</p>
+      </div>
+
+      <div class="card">
+        <h4>English</h4>
+        <p>زبان معماری؛ جایی که سیستم‌ها مینیمال، منطقی و بی‌رحمانه شفاف طراحی می‌شوند.</p>
+      </div>
+
+      <div class="card">
+        <h4>Russian</h4>
+        <p>زبان عمق؛ جایی که الگوریتم‌ها مثل ادبیات روس، سنگین، فلسفی و ماندگارند.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="premium" class="section locked">
+    <h3>Premium Philosophy</h3>
+    <p>
+      پریمیوم بودن یعنی ساخت چیزی که جایگزین ندارد.
+      تجربه‌ای که کاربر حس کند وارد نسخهٔ اولیهٔ آیندهٔ بشریت شده.
+      این صفحه، یک آزمایش روی این سؤال است:
+      اگر یک انسان، خودش را مثل یک سیستم طراحی کند—نتیجه چه می‌شود؟
+    </p>
+  </section>
+
+  <footer class="footer locked">
+    <p>© 2026 — Mehdi Maramzi  
+    این صفحه یک تجربه است، نه یک معرفی.</p>
+  </footer>
+
+  <script>
+    // WebGL سه‌بعدی ساده با Three.js
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 4;
+
+    const geometry = new THREE.IcosahedronGeometry(1.2, 1);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x00f5ff,
+      emissive: 0x000000,
+      metalness: 0.6,
+      roughness: 0.2,
+      wireframe: true
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const light = new THREE.PointLight(0xff00ff, 1.2);
+    light.position.set(3, 3, 5);
+    scene.add(light);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      mesh.rotation.x += 0.003;
+      mesh.rotation.y += 0.004;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    // تعامل صوتی (Web Speech API)
+    const voiceBtn = document.getElementById('voiceBtn');
+    const voiceStatus = document.getElementById('voiceStatus');
+    const lockedElements = document.querySelectorAll('.locked');
+
+    function unlockExperience() {
+      lockedElements.forEach(el => {
+        el.classList.remove('locked');
+        el.classList.add('unlocked');
+      });
+      voiceStatus.textContent = 'تجربه باز شد. اسکرول کن و جهان را ببین.';
+      voiceBtn.textContent = 'باز شد ✅';
+      voiceBtn.disabled = true;
+    }
+
+    voiceBtn.addEventListener('click', () => {
+      if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+        voiceStatus.textContent = 'مرورگر از تعامل صوتی پشتیبانی نمی‌کند.';
+        return;
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'fa-IR';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      voiceStatus.textContent = 'در حال گوش دادن... کلمه «مهدی» را بگو.';
+
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.trim().toLowerCase();
+        if (transcript.includes('مهدی')) {
+          voiceStatus.textContent = 'صدای تو تأیید شد. تجربه در حال باز شدن است...';
+          unlockExperience();
+        } else {
+          voiceStatus.textContent = 'کلمه درست نبود. دوباره تلاش کن و «مهدی» را بگو.';
+        }
+      };
+
+      recognition.onerror = () => {
+        voiceStatus.textContent = 'خطا در تشخیص صوت. دوباره تلاش کن.';
+      };
+    });
+  </script>
+</body>
+</html>
