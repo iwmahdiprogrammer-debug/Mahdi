@@ -17,17 +17,15 @@
       background: #05060a;
       color: #fff;
       font-family: 'Vazirmatn', sans-serif;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
-    /* کانواس WebGL پس‌زمینه */
     #bg-canvas {
       position: fixed;
       inset: 0;
       z-index: 0;
     }
 
-    /* لایه تاریک روی WebGL */
     .overlay {
       position: fixed;
       inset: 0;
@@ -36,7 +34,6 @@
       z-index: 1;
     }
 
-    /* HERO سینمایی */
     .hero {
       position: relative;
       z-index: 2;
@@ -52,8 +49,8 @@
       max-width: 700px;
       opacity: 0;
       transform: translateY(30px);
-      animation: heroIntro 1.8s ease-out forwards;
-      animation-delay: 1s;
+      animation: heroIntro 1.2s ease-out forwards;
+      animation-delay: 0.8s;
     }
 
     @keyframes heroIntro {
@@ -118,7 +115,6 @@
       box-shadow: 0 0 22px rgba(0,245,255,0.6);
     }
 
-    /* بخش‌ها */
     .section {
       position: relative;
       z-index: 2;
@@ -175,7 +171,6 @@
       font-size: 13px;
     }
 
-    /* تعامل صوتی */
     .voice-status {
       margin-top: 14px;
       font-size: 14px;
@@ -207,11 +202,9 @@
 </head>
 <body>
 
-  <!-- WebGL پس‌زمینه -->
   <canvas id="bg-canvas"></canvas>
   <div class="overlay"></div>
 
-  <!-- HERO با ورود سینمایی و تعامل صوتی -->
   <header class="hero">
     <div class="hero-inner hero-content locked" id="heroContent">
       <img src="avatar.jpg" class="avatar" alt="Mehdi Maramzi">
@@ -221,7 +214,7 @@
 
       <p class="intro">
         مسلط به <span>عربی</span>، <span>انگلیسی</span> و <span>روسی</span>.  
-        این صفحه معرفی نیست؛ یک **سیستم God Mode انسانی** است.
+        این صفحه معرفی نیست؛ یک سیستم God Mode انسانی است.
       </p>
 
       <button class="btn" id="voiceBtn">شروع با صدای تو</button>
@@ -231,7 +224,6 @@
     </div>
   </header>
 
-  <!-- بخش‌ها (قفل تا قبل از صوت) -->
   <section id="core" class="section locked">
     <h3>Core Logic — منطق مرکزی</h3>
     <p>
@@ -241,20 +233,17 @@
     </p>
   </section>
 
-  <section id="languages" class="section cards locked">
+  <section id="languages" class="section locked">
     <h3>Polyglot Intelligence</h3>
-
     <div class="grid">
       <div class="card">
         <h4>Arabic</h4>
         <p>زبان سیالیت؛ جایی که ساختارها مثل خط عربی، نرم، دقیق و شاعرانه‌اند.</p>
       </div>
-
       <div class="card">
         <h4>English</h4>
         <p>زبان معماری؛ جایی که سیستم‌ها مینیمال، منطقی و بی‌رحمانه شفاف طراحی می‌شوند.</p>
       </div>
-
       <div class="card">
         <h4>Russian</h4>
         <p>زبان عمق؛ جایی که الگوریتم‌ها مثل ادبیات روس، سنگین، فلسفی و ماندگارند.</p>
@@ -278,20 +267,24 @@
   </footer>
 
   <script>
-    // WebGL سه‌بعدی ساده با Three.js
+    // WebGL پس‌زمینه
     const canvas = document.getElementById('bg-canvas');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
+    );
     camera.position.z = 4;
 
     const geometry = new THREE.IcosahedronGeometry(1.2, 1);
     const material = new THREE.MeshStandardMaterial({
       color: 0x00f5ff,
-      emissive: 0x000000,
       metalness: 0.6,
       roughness: 0.2,
       wireframe: true
@@ -317,7 +310,7 @@
       camera.updateProjectionMatrix();
     });
 
-    // تعامل صوتی (Web Speech API)
+    // تعامل صوتی
     const voiceBtn = document.getElementById('voiceBtn');
     const voiceStatus = document.getElementById('voiceStatus');
     const lockedElements = document.querySelectorAll('.locked');
@@ -333,12 +326,14 @@
     }
 
     voiceBtn.addEventListener('click', () => {
-      if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
         voiceStatus.textContent = 'مرورگر از تعامل صوتی پشتیبانی نمی‌کند.';
         return;
       }
 
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
       recognition.lang = 'fa-IR';
       recognition.interimResults = false;
