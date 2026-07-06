@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mehdi Maramzi — God Mode</title>
+  <title>Mehdi Maramzi — God Mode Stable</title>
 
-  <!-- فونت -->
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
-
-  <!-- Three.js برای WebGL -->
   <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
 
   <style>
@@ -219,7 +216,8 @@
 
       <button class="btn" id="voiceBtn">شروع با صدای تو</button>
       <div class="voice-status" id="voiceStatus">
-        برای باز شدن تجربه، کلمه «مهدی» را با صدای خودت بگو.
+        اگر مرورگر اجازه داد، کلمه «مهدی» را بگو.  
+        اگر اجازه نداد، تجربه به‌صورت خودکار باز می‌شود.
       </div>
     </div>
   </header>
@@ -267,7 +265,7 @@
   </footer>
 
   <script>
-    // WebGL پس‌زمینه
+    // WebGL
     const canvas = document.getElementById('bg-canvas');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -310,7 +308,7 @@
       camera.updateProjectionMatrix();
     });
 
-    // تعامل صوتی
+    // Voice Interaction (with fallback)
     const voiceBtn = document.getElementById('voiceBtn');
     const voiceStatus = document.getElementById('voiceStatus');
     const lockedElements = document.querySelectorAll('.locked');
@@ -325,37 +323,44 @@
       voiceBtn.disabled = true;
     }
 
+    function fallbackUnlock() {
+      voiceStatus.textContent = 'مرورگر صوت را بلاک کرد. تجربه به‌صورت خودکار باز شد.';
+      unlockExperience();
+    }
+
     voiceBtn.addEventListener('click', () => {
       const SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
 
       if (!SpeechRecognition) {
-        voiceStatus.textContent = 'مرورگر از تعامل صوتی پشتیبانی نمی‌کند.';
+        fallbackUnlock();
         return;
       }
 
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'fa-IR';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
+      try {
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'fa-IR';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
 
-      voiceStatus.textContent = 'در حال گوش دادن... کلمه «مهدی» را بگو.';
+        voiceStatus.textContent = 'در حال گوش دادن... کلمه «مهدی» را بگو.';
 
-      recognition.start();
+        recognition.start();
 
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.trim().toLowerCase();
-        if (transcript.includes('مهدی')) {
-          voiceStatus.textContent = 'صدای تو تأیید شد. تجربه در حال باز شدن است...';
-          unlockExperience();
-        } else {
-          voiceStatus.textContent = 'کلمه درست نبود. دوباره تلاش کن و «مهدی» را بگو.';
-        }
-      };
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript.trim().toLowerCase();
+          if (transcript.includes('مهدی')) {
+            voiceStatus.textContent = 'صدای تو تأیید شد. تجربه در حال باز شدن است...';
+            unlockExperience();
+          } else {
+            voiceStatus.textContent = 'کلمه درست نبود. دوباره تلاش کن.';
+          }
+        };
 
-      recognition.onerror = () => {
-        voiceStatus.textContent = 'خطا در تشخیص صوت. دوباره تلاش کن.';
-      };
+        recognition.onerror = () => fallbackUnlock();
+      } catch {
+        fallbackUnlock();
+      }
     });
   </script>
 </body>
