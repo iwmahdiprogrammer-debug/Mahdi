@@ -1,159 +1,275 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>مهدی — برنامه‌نویس و طراح تجربه کاربری</title>
+    <title>مهدی — برنامه‌نویس باهوش چهارزبانه | رزومه پرمیوم</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style>
-        /* ====== Base (Apple‑style clean) ====== */
-        @font-face {
-            font-family: "SF Pro";
-            src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir.woff2") format("woff2");
+        /* ====== Design Tokens ====== */
+        :root {
+            --bg: #050816;
+            --bg-soft: #0b1020;
+            --bg-softer: #111827;
+            --accent: #3b82f6;
+            --accent-soft: rgba(59,130,246,0.15);
+            --accent-strong: #60a5fa;
+            --text: #e5e7eb;
+            --text-soft: #9ca3af;
+            --border-soft: #1f2937;
+            --danger: #ef4444;
+            --radius-lg: 22px;
+            --radius-xl: 30px;
+            --blur: 18px;
+            --transition-fast: 0.18s ease-out;
+            --transition-med: 0.28s ease-out;
         }
+
+        [data-theme="light"] {
+            --bg: #f5f5f7;
+            --bg-soft: #ffffff;
+            --bg-softer: #f3f4f6;
+            --accent: #0071e3;
+            --accent-soft: rgba(0,113,227,0.12);
+            --accent-strong: #0f8df5;
+            --text: #111827;
+            --text-soft: #6b7280;
+            --border-soft: #e5e7eb;
+        }
+
         * { box-sizing: border-box; }
         html, body {
             margin: 0;
             padding: 0;
-            font-family: "SF Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f5f5f7;
-            color: #1d1d1f;
-        }
-        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
             direction: rtl;
         }
-        a {
-            color: #0071e3;
-            text-decoration: none;
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
         }
-        a:hover {
-            text-decoration: underline;
-        }
+        a { color: var(--accent-strong); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* ====== Layout ====== */
         .page {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 32px 20px 60px;
+            width: 100%;
+            max-width: 1120px;
+            padding: 28px 18px 40px;
         }
 
-        /* ====== Header ====== */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
         .logo {
             font-weight: 600;
-            letter-spacing: 0.08em;
-            font-size: 14px;
-            color: #6e6e73;
+            letter-spacing: 0.12em;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: var(--text-soft);
         }
+
         .nav {
             display: flex;
-            gap: 18px;
+            gap: 14px;
             font-size: 13px;
-            color: #6e6e73;
         }
         .nav a {
-            padding-bottom: 4px;
-            border-bottom: 1px solid transparent;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            color: var(--text-soft);
+            transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
         }
         .nav a:hover {
-            border-bottom-color: #0071e3;
-            color: #0071e3;
+            border-color: var(--accent-soft);
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-soft);
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--border-soft);
+            background: var(--bg-soft);
+            backdrop-filter: blur(10px);
+            transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+        }
+        .theme-toggle:hover {
+            background: var(--bg-softer);
+            border-color: var(--accent-soft);
+            transform: translateY(-1px);
+        }
+        .theme-toggle-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-soft);
         }
 
         /* ====== Hero ====== */
         .hero {
             display: grid;
             grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-            gap: 32px;
+            gap: 26px;
             align-items: center;
-            padding: 32px 24px;
-            border-radius: 32px;
-            background: #ffffff;
-            box-shadow: 0 18px 40px rgba(0,0,0,0.06);
-            margin-bottom: 32px;
+            padding: 26px 22px;
+            border-radius: var(--radius-xl);
+            background: radial-gradient(circle at 0% 0%, rgba(59,130,246,0.18), transparent 55%),
+                        radial-gradient(circle at 100% 100%, rgba(16,185,129,0.18), transparent 55%),
+                        var(--bg-soft);
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+            margin-bottom: 26px;
+            position: relative;
+            overflow: hidden;
         }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 0%, rgba(148,163,184,0.18), transparent 55%);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .hero-main {
+            position: relative;
+            z-index: 1;
+        }
+
         .hero-title {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 700;
             letter-spacing: -0.03em;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .hero-subtitle {
-            font-size: 16px;
-            color: #6e6e73;
-            margin-bottom: 18px;
+            font-size: 15px;
+            color: var(--text-soft);
+            margin-bottom: 14px;
         }
         .hero-text {
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.9;
-            color: #3a3a3c;
-            margin-bottom: 20px;
+            color: var(--text-soft);
+            margin-bottom: 16px;
         }
+
         .hero-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .hero-tag {
             padding: 4px 10px;
             border-radius: 999px;
-            background: #f5f5f7;
-            font-size: 12px;
-            color: #3a3a3c;
+            background: rgba(15,23,42,0.7);
+            border: 1px solid rgba(148,163,184,0.35);
+            font-size: 11px;
+            color: var(--text-soft);
+            backdrop-filter: blur(10px);
         }
+
         .hero-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 8px;
+            margin-top: 6px;
         }
-        .btn-primary {
-            padding: 8px 18px;
-            border-radius: 999px;
-            border: none;
-            background: #0071e3;
-            color: #fff;
-            font-size: 13px;
-            cursor: pointer;
-        }
+        .btn-primary,
         .btn-secondary {
             padding: 8px 18px;
             border-radius: 999px;
-            border: 1px solid #d2d2d7;
-            background: #fff;
-            color: #1d1d1f;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background var(--transition-med), transform var(--transition-fast), box-shadow var(--transition-fast);
         }
-        .btn-primary:hover { background: #005bb5; }
-        .btn-secondary:hover { background: #f5f5f7; }
+        .btn-primary {
+            background: var(--accent);
+            color: #0b1020;
+            box-shadow: 0 12px 30px rgba(59,130,246,0.45);
+        }
+        .btn-primary:hover {
+            background: var(--accent-strong);
+            transform: translateY(-1px);
+            box-shadow: 0 16px 40px rgba(59,130,246,0.55);
+        }
+        .btn-secondary {
+            background: rgba(15,23,42,0.8);
+            color: var(--text-soft);
+            border: 1px solid var(--border-soft);
+        }
+        .btn-secondary:hover {
+            background: rgba(15,23,42,1);
+            transform: translateY(-1px);
+        }
+
+        .btn-icon {
+            width: 14px;
+            height: 14px;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.5);
+        }
 
         .hero-avatar-wrap {
+            position: relative;
+            z-index: 1;
             display: flex;
             justify-content: center;
         }
         .hero-avatar {
-            width: 180px;
-            height: 180px;
+            width: 190px;
+            height: 190px;
             border-radius: 32px;
             overflow: hidden;
             position: relative;
-            background: #000;
+            background: #020617;
+            box-shadow: 0 22px 50px rgba(0,0,0,0.7);
+            transform: translateY(0);
+            transition: transform var(--transition-med), box-shadow var(--transition-med);
+        }
+        .hero-avatar:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 70px rgba(0,0,0,0.85);
         }
         .hero-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .avatar-glow {
+        .avatar-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 0% 0%, rgba(59,130,246,0.35), transparent 55%);
+            mix-blend-mode: soft-light;
+        }
+        .avatar-border {
             position: absolute;
             inset: 0;
             border-radius: 32px;
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.4),
-                        0 25px 60px rgba(0,0,0,0.35);
+            border: 1px solid rgba(148,163,184,0.6);
+            box-shadow: 0 0 0 1px rgba(15,23,42,0.8);
             pointer-events: none;
         }
 
@@ -161,29 +277,44 @@
         .section-row {
             display: grid;
             grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
-            gap: 24px;
-            margin-bottom: 24px;
+            gap: 20px;
+            margin-bottom: 20px;
         }
         .card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 20px 20px 22px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+            background: var(--bg-soft);
+            border-radius: var(--radius-lg);
+            padding: 18px 18px 20px;
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 0% 0%, rgba(59,130,246,0.12), transparent 55%);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .card-inner {
+            position: relative;
+            z-index: 1;
         }
         .card-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .card-subtitle {
             font-size: 12px;
-            color: #6e6e73;
-            margin-bottom: 12px;
+            color: var(--text-soft);
+            margin-bottom: 10px;
         }
         .card-text {
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.8;
-            color: #3a3a3c;
+            color: var(--text-soft);
         }
 
         .pill-list {
@@ -195,15 +326,23 @@
         .pill {
             padding: 5px 10px;
             border-radius: 999px;
-            background: #f5f5f7;
-            font-size: 12px;
-            color: #3a3a3c;
+            background: rgba(15,23,42,0.85);
+            border: 1px solid rgba(148,163,184,0.4);
+            font-size: 11px;
+            color: var(--text-soft);
+            backdrop-filter: blur(10px);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+        }
+        .pill:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+            border-color: var(--accent-soft);
         }
 
         .timeline-item {
             margin-bottom: 10px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #f5f5f7;
+            border-bottom: 1px dashed rgba(148,163,184,0.35);
         }
         .timeline-item:last-child {
             border-bottom: none;
@@ -216,62 +355,69 @@
         }
         .timeline-meta {
             font-size: 11px;
-            color: #6e6e73;
+            color: var(--text-soft);
             margin-bottom: 4px;
         }
         .timeline-desc {
             font-size: 12px;
-            color: #3a3a3c;
+            color: var(--text-soft);
             line-height: 1.7;
         }
 
         .lang-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
+            gap: 8px;
             margin-top: 8px;
         }
         .lang-card {
-            background: #f5f5f7;
-            border-radius: 16px;
-            padding: 10px;
-            font-size: 12px;
+            background: rgba(15,23,42,0.9);
+            border-radius: 14px;
+            padding: 9px;
+            font-size: 11px;
+            border: 1px solid rgba(148,163,184,0.4);
+            backdrop-filter: blur(10px);
         }
         .lang-name {
             font-weight: 600;
             margin-bottom: 2px;
         }
         .lang-level {
-            color: #6e6e73;
+            color: var(--text-soft);
             margin-bottom: 4px;
         }
         .progress-bar {
             height: 4px;
             border-radius: 999px;
-            background: #e5e5ea;
+            background: rgba(15,23,42,0.9);
             overflow: hidden;
         }
         .progress {
             height: 100%;
             border-radius: 999px;
-            background: #0071e3;
+            background: linear-gradient(90deg, var(--accent), var(--accent-strong));
         }
 
         .contact-list div {
-            font-size: 13px;
+            font-size: 12px;
             margin-bottom: 6px;
+            color: var(--text-soft);
         }
         .contact-label {
-            color: #6e6e73;
             margin-left: 4px;
         }
 
         /* ====== Footer ====== */
         footer {
-            margin-top: 32px;
+            margin-top: 24px;
             font-size: 11px;
-            color: #6e6e73;
+            color: var(--text-soft);
             text-align: center;
+        }
+
+        /* ====== Smart hover scroll ====== */
+        .scroll-link {
+            cursor: pointer;
         }
 
         /* ====== Responsive ====== */
@@ -293,39 +439,44 @@
 
     <!-- Top bar -->
     <div class="top-bar">
-        <div class="logo">MAHDI.DEV</div>
+        <div class="logo">MAHDI · PREMIUM DEV</div>
         <nav class="nav">
-            <a href="#about">درباره</a>
-            <a href="#skills">مهارت‌ها</a>
-            <a href="#projects">پروژه‌ها</a>
-            <a href="#contact">ارتباط</a>
+            <a class="scroll-link" data-target="about">درباره</a>
+            <a class="scroll-link" data-target="skills">مهارت‌ها</a>
+            <a class="scroll-link" data-target="projects">پروژه‌ها</a>
+            <a class="scroll-link" data-target="contact">ارتباط</a>
         </nav>
+        <div class="theme-toggle" id="themeToggle">
+            <div class="theme-toggle-dot"></div>
+            <span>مود هوشمند</span>
+        </div>
     </div>
 
     <!-- Hero -->
     <section class="hero" id="about">
-        <div>
-            <h1 class="hero-title">مهدی — برنامه‌نویس و طراح تجربه کاربری</h1>
+        <div class="hero-main">
+            <h1 class="hero-title">مهدی — برنامه‌نویس باهوش چهارزبانه</h1>
             <div class="hero-subtitle">Full‑Stack Developer · Web Designer · UI/UX Specialist</div>
             <p class="hero-text">
-                من مهدی هستم؛ روی ساخت وب‌سایت‌ها و محصولات دیجیتال تمیز، مینیمال و سریع تمرکز می‌کنم.
-                ترکیب کدنویسی حرفه‌ای با دیزاین الهام‌گرفته از سبک اپل، چیزی است که به هر پروژه
-                حس پرمیوم و متفاوت می‌دهد.
+                من مهدی هستم؛ روی ساخت وب‌سایت‌ها و محصولات دیجیتال با حس پرمیوم، واکنش سریع و تجربه کاربری
+                هوشمند تمرکز می‌کنم. هر کلیک، هر هاور و هر اسکرول، عمداً طراحی شده تا حس «تمیز و باهوش» بده.
                 <br><br>
                 به چهار زبان <strong>انگلیسی، آلمانی، عربی و فارسی</strong> مسلط هستم و می‌توانم با تیم‌ها و
-                کلاینت‌های بین‌المللی همکاری مؤثر داشته باشم.
+                کلاینت‌های بین‌المللی روی پروژه‌های ریموت و بلندمدت کار کنم.
             </p>
             <div class="hero-tags">
                 <span class="hero-tag">JavaScript / TypeScript</span>
                 <span class="hero-tag">React & Next.js</span>
                 <span class="hero-tag">Node.js & REST API</span>
                 <span class="hero-tag">UI/UX Design</span>
+                <span class="hero-tag">Premium Dark Mode</span>
             </div>
             <div class="hero-actions">
-                <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                <button class="btn-primary scroll-link" data-target="contact">
+                    <span class="btn-icon"></span>
                     همکاری و پروژه جدید
                 </button>
-                <button class="btn-secondary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
+                <button class="btn-secondary scroll-link" data-target="projects">
                     مشاهده پروژه‌ها
                 </button>
             </div>
@@ -334,7 +485,8 @@
             <div class="hero-avatar">
                 <!-- آواتار: فایل avatar.jpg را کنار این HTML قرار بده -->
                 <img src="avatar.jpg" alt="Mahdi Avatar">
-                <div class="avatar-glow"></div>
+                <div class="avatar-overlay"></div>
+                <div class="avatar-border"></div>
             </div>
         </div>
     </section>
@@ -343,45 +495,50 @@
     <div class="section-row">
         <!-- Skills -->
         <section class="card" id="skills">
-            <div class="card-title">مهارت‌های فنی</div>
-            <div class="card-subtitle">ترکیب توسعه فرانت‌اند، بک‌اند و دیزاین</div>
-            <p class="card-text">
-                تمرکز من روی ساخت رابط‌های کاربری سبک، واکنش‌گرا و قابل توسعه است؛
-                از طراحی وایرفریم تا پیاده‌سازی کامل با فریم‌ورک‌های مدرن.
-            </p>
-            <div class="pill-list">
-                <span class="pill"><strong>Front‑End:</strong> React, Next.js, HTML5, CSS3, Tailwind</span>
-                <span class="pill"><strong>Back‑End:</strong> Node.js, Express, REST API</span>
-                <span class="pill"><strong>Languages:</strong> JavaScript, TypeScript</span>
-                <span class="pill"><strong>UI/UX:</strong> Wireframing, Prototyping, Design Systems</span>
-                <span class="pill"><strong>Tools:</strong> Figma, VS Code, Git & GitHub</span>
+            <div class="card-inner">
+                <div class="card-title">مهارت‌های فنی</div>
+                <div class="card-subtitle">ترکیب توسعه فرانت‌اند، بک‌اند و دیزاین هوشمند</div>
+                <p class="card-text">
+                    تمرکز من روی ساخت رابط‌های کاربری سبک، واکنش‌گرا و قابل توسعه است؛
+                    از طراحی وایرفریم تا پیاده‌سازی کامل با فریم‌ورک‌های مدرن و بهینه‌سازی عملکرد.
+                </p>
+                <div class="pill-list">
+                    <span class="pill"><strong>Front‑End:</strong> React, Next.js, HTML5, CSS3, Tailwind</span>
+                    <span class="pill"><strong>Back‑End:</strong> Node.js, Express, REST API</span>
+                    <span class="pill"><strong>Languages:</strong> JavaScript, TypeScript</span>
+                    <span class="pill"><strong>UI/UX:</strong> Wireframing, Prototyping, Design Systems</span>
+                    <span class="pill"><strong>Tools:</strong> Figma, VS Code, Git & GitHub</span>
+                    <span class="pill"><strong>Other:</strong> Responsive Design, SEO Basics, Performance Tuning</span>
+                </div>
             </div>
         </section>
 
         <!-- Languages -->
         <section class="card">
-            <div class="card-title">زبان‌ها</div>
-            <div class="card-subtitle">ارتباط با تیم‌ها و کلاینت‌های بین‌المللی</div>
-            <div class="lang-grid">
-                <div class="lang-card">
-                    <div class="lang-name">انگلیسی</div>
-                    <div class="lang-level">سطح: پیشرفته (C1)</div>
-                    <div class="progress-bar"><div class="progress" style="width:90%;"></div></div>
-                </div>
-                <div class="lang-card">
-                    <div class="lang-name">آلمانی</div>
-                    <div class="lang-level">سطح: متوسط رو به بالا (B2)</div>
-                    <div class="progress-bar"><div class="progress" style="width:75%;"></div></div>
-                </div>
-                <div class="lang-card">
-                    <div class="lang-name">عربی</div>
-                    <div class="lang-level">سطح: خوب برای مکالمه و همکاری (B2)</div>
-                    <div class="progress-bar"><div class="progress" style="width:80%;"></div></div>
-                </div>
-                <div class="lang-card">
-                    <div class="lang-name">فارسی</div>
-                    <div class="lang-level">زبان مادری</div>
-                    <div class="progress-bar"><div class="progress" style="width:100%;"></div></div>
+            <div class="card-inner">
+                <div class="card-title">زبان‌ها</div>
+                <div class="card-subtitle">ارتباط با تیم‌ها و کلاینت‌های بین‌المللی</div>
+                <div class="lang-grid">
+                    <div class="lang-card">
+                        <div class="lang-name">انگلیسی</div>
+                        <div class="lang-level">سطح: پیشرفته (C1)</div>
+                        <div class="progress-bar"><div class="progress" style="width:90%;"></div></div>
+                    </div>
+                    <div class="lang-card">
+                        <div class="lang-name">آلمانی</div>
+                        <div class="lang-level">سطح: متوسط رو به بالا (B2)</div>
+                        <div class="progress-bar"><div class="progress" style="width:75%;"></div></div>
+                    </div>
+                    <div class="lang-card">
+                        <div class="lang-name">عربی</div>
+                        <div class="lang-level">سطح: خوب برای مکالمه و همکاری (B2)</div>
+                        <div class="progress-bar"><div class="progress" style="width:80%;"></div></div>
+                    </div>
+                    <div class="lang-card">
+                        <div class="lang-name">فارسی</div>
+                        <div class="lang-level">زبان مادری</div>
+                        <div class="progress-bar"><div class="progress" style="width:100%;"></div></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -390,65 +547,111 @@
     <div class="section-row" id="projects">
         <!-- Projects -->
         <section class="card">
-            <div class="card-title">پروژه‌های منتخب</div>
-            <div class="card-subtitle">نمونه‌هایی از کارهای واقعی و شخصی</div>
+            <div class="card-inner">
+                <div class="card-title">پروژه‌های منتخب</div>
+                <div class="card-subtitle">نمونه‌هایی از کارهای واقعی و شخصی</div>
 
-            <div class="timeline-item">
-                <div class="timeline-title">CodeZone — پلتفرم آموزشی وب و برنامه‌نویسی</div>
-                <div class="timeline-meta">Front‑End & Brand Design | React, Next.js, Tailwind</div>
-                <div class="timeline-desc">
-                    طراحی و پیاده‌سازی رابط کاربری مدرن برای پلتفرم آموزشی، شامل صفحه اصلی، داشبورد،
-                    بلاگ و سیستم دوره‌ها؛ با تمرکز روی سرعت، خوانایی و هویت بصری منسجم.
+                <div class="timeline-item">
+                    <div class="timeline-title">CodeZone — پلتفرم آموزشی وب و برنامه‌نویسی</div>
+                    <div class="timeline-meta">Front‑End & Brand Design | React, Next.js, Tailwind</div>
+                    <div class="timeline-desc">
+                        طراحی و پیاده‌سازی رابط کاربری مدرن برای پلتفرم آموزشی، شامل صفحه اصلی، داشبورد،
+                        بلاگ و سیستم دوره‌ها؛ با تمرکز روی سرعت، خوانایی و هویت بصری منسجم برای برند CodeZone.
+                    </div>
                 </div>
-            </div>
 
-            <div class="timeline-item">
-                <div class="timeline-title">بازی تحت وب Tic‑Tac‑Toe</div>
-                <div class="timeline-meta">JavaScript خالص | HTML, CSS, JS</div>
-                <div class="timeline-desc">
-                    ساخت بازی مینیمال با منطق کامل و انیمیشن‌های سبک؛ مناسب برای آموزش مفاهیم پایه
-                    جاوااسکریپت و تعامل کاربر.
+                <div class="timeline-item">
+                    <div class="timeline-title">بازی تحت وب Tic‑Tac‑Toe</div>
+                    <div class="timeline-meta">JavaScript خالص | HTML, CSS, JS</div>
+                    <div class="timeline-desc">
+                        ساخت بازی مینیمال با منطق کامل و انیمیشن‌های سبک؛ مناسب برای آموزش مفاهیم پایه
+                        جاوااسکریپت و تعامل کاربر.
+                    </div>
                 </div>
-            </div>
 
-            <div class="timeline-item">
-                <div class="timeline-title">Landing Page شخصی رزومه</div>
-                <div class="timeline-meta">Responsive Design | SEO Friendly</div>
-                <div class="timeline-desc">
-                    طراحی صفحه شخصی رزومه با سبک اپل، مناسب برای ارسال به کارفرماها، لینکدین و گیت‌هاب؛
-                    تمرکز روی معرفی شفاف مهارت‌ها، زبان‌ها و راه‌های ارتباطی.
+                <div class="timeline-item">
+                    <div class="timeline-title">Landing Page شخصی رزومه</div>
+                    <div class="timeline-meta">Responsive Design | SEO Friendly</div>
+                    <div class="timeline-desc">
+                        طراحی صفحه شخصی رزومه با سبک پرمیوم دارک، مناسب برای ارسال به کارفرماها، لینکدین و گیت‌هاب؛
+                        تمرکز روی معرفی شفاف مهارت‌ها، زبان‌ها و راه‌های ارتباطی.
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Contact -->
         <section class="card" id="contact">
-            <div class="card-title">ارتباط و همکاری</div>
-            <div class="card-subtitle">برای پروژه‌های جدید، ریموت یا بین‌المللی</div>
-            <div class="contact-list">
-                <div>
-                    <span class="contact-label">ایمیل:</span>
-                    <a href="mailto:mahdi.dev@example.com">mahdi.dev@example.com</a>
-                </div>
-                <div>
-                    <span class="contact-label">گیت‌هاب:</span>
-                    <a href="https://github.com/mahdi-dev" target="_blank">github.com/mahdi-dev</a>
-                </div>
-                <div>
-                    <span class="contact-label">لینکدین:</span>
-                    <a href="https://linkedin.com/in/mahdi-dev" target="_blank">linkedin.com/in/mahdi-dev</a>
-                </div>
-                <div>
-                    <span class="contact-label">اینستاگرام کاری:</span>
-                    <a href="https://instagram.com/codezone" target="_blank">@codezone</a>
+            <div class="card-inner">
+                <div class="card-title">ارتباط و همکاری</div>
+                <div class="card-subtitle">برای پروژه‌های ریموت، بین‌المللی و بلندمدت</div>
+                <div class="contact-list">
+                    <div>
+                        <span class="contact-label">ایمیل:</span>
+                        <a href="mailto:mahdi.dev@example.com">mahdi.dev@example.com</a>
+                    </div>
+                    <div>
+                        <span class="contact-label">گیت‌هاب:</span>
+                        <a href="https://github.com/mahdi-dev" target="_blank">github.com/mahdi-dev</a>
+                    </div>
+                    <div>
+                        <span class="contact-label">لینکدین:</span>
+                        <a href="https://linkedin.com/in/mahdi-dev" target="_blank">linkedin.com/in/mahdi-dev</a>
+                    </div>
+                    <div>
+                        <span class="contact-label">اینستاگرام کاری:</span>
+                        <a href="https://instagram.com/codezone" target="_blank">@codezone</a>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 
     <footer>
-        © مهدی — برنامه‌نویس و طراح تجربه کاربری. نسخه پرمیوم سبک اپل. این فایل آماده استفاده به عنوان سایت رزومه شخصی است.
+        © مهدی — برنامه‌نویس باهوش چهارزبانه و طراح وب. نسخه پرمیوم دارک مود با واکنش‌های هوشمند.
     </footer>
 </div>
+
+<script>
+    // Smooth scroll for nav and buttons
+    document.querySelectorAll('.scroll-link').forEach(el => {
+        el.addEventListener('click', () => {
+            const targetId = el.dataset.target;
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // Smart theme toggle (dark / light)
+    const rootHtml = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+
+    function setTheme(theme) {
+        rootHtml.setAttribute('data-theme', theme);
+        try {
+            localStorage.setItem('mahdi-theme', theme);
+        } catch (e) {}
+    }
+
+    // Load saved theme
+    (function initTheme() {
+        let saved = null;
+        try {
+            saved = localStorage.getItem('mahdi-theme');
+        } catch (e) {}
+        if (saved === 'light' || saved === 'dark') {
+            setTheme(saved);
+        } else {
+            setTheme('dark');
+        }
+    })();
+
+    themeToggle.addEventListener('click', () => {
+        const current = rootHtml.getAttribute('data-theme');
+        setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+</script>
 </body>
 </html>
