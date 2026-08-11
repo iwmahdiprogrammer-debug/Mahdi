@@ -1,16 +1,11 @@
 <?php
-/*
-|--------------------------------------------------------------------------
-| Mahdi Maramzi — Personal Portfolio
-| Replace the contact values below with your real information.
-|--------------------------------------------------------------------------
-*/
+
 $name = "مهدی مرمزی";
 $role = "طراح وب‌سایت • برنامه‌نویس";
-$gmail = "yourmail@gmail.com";
-$phone = "+98 9XX XXX XXXX";
-$whatsapp = "989XXXXXXXXX";
-$instagram = "mahdi.maramzi";
+$gmail = "iwmahdiprogrammer@gmail.com";
+$phone = "+98 993 492 0508";
+$whatsapp = "989934920508";
+$instagram = "lmahdi.mz";
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -485,17 +480,17 @@ $instagram = "mahdi.maramzi";
 
             <div class="contact-card">
                 <small>PHONE</small>
-                <a href="tel:<?= htmlspecialchars($phone) ?>"><?= htmlspecialchars($phone) ?></a>
+                <a href="tel:+98 993 492 0508<?= htmlspecialchars($phone) ?>"><?= htmlspecialchars($phone) ?></a>
             </div>
 
             <div class="contact-card">
                 <small>WHATSAPP</small>
-                <a href="https://wa.me/<?= htmlspecialchars($whatsapp) ?>" target="_blank" rel="noopener">Message me ↗</a>
+                <a href="https://wa.me/message/C4L5MJDFO6QWN1<?= htmlspecialchars($whatsapp) ?>" target="_blank" rel="noopener">Message me ↗</a>
             </div>
 
             <div class="contact-card">
                 <small>INSTAGRAM</small>
-                <a href="https://instagram.com/<?= htmlspecialchars($instagram) ?>" target="_blank" rel="noopener">@<?= htmlspecialchars($instagram) ?> ↗</a>
+                <a href="https://www.instagram.com/lmahdi.mz?utm_source=qr&igsh=NDFnZzJzZWlqeG15<?= htmlspecialchars($instagram) ?>" target="_blank" rel="noopener">@<?= htmlspecialchars($instagram) ?> ↗</a>
             </div>
         </div>
     </section>
