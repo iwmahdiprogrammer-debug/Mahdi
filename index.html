@@ -1,118 +1,4044 @@
-yy6<!doctype html>
-<html lang="fa" dir="rtl">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#050505">
-<meta name="description" content="مهدی مرمزی — طراح وب‌سایت و برنامه‌نویس">
-<title>مهدی مرمزی — Designer & Developer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mahdi Maramzi — Personal blog</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@400;500;600&family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+    --bg:#050505;
+    --surface:#0d0d0d;
+    --surface2:#151515;
+    --text:#f5f5f5;
+    --muted:#888;
+    --muted2:#444;
+    --border:rgba(255,255,255,.12);
+    --accent:#fff;
+    --danger:#ff6464;
+    --success:#77e6a5;
+    --shadow:0 40px 120px rgba(0,0,0,.6);
+}
+
+body.light{
+    --bg:#f3f3f0;
+    --surface:#fff;
+    --surface2:#e9e9e5;
+    --text:#111;
+    --muted:#666;
+    --muted2:#aaa;
+    --border:rgba(0,0,0,.12);
+    --accent:#111;
+    --shadow:0 30px 100px rgba(0,0,0,.1);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"DM Sans",sans-serif;
+    overflow-x:hidden;
+    transition:.5s;
+}
+
+body.rtl{
+    font-family:"Vazirmatn",sans-serif;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    -webkit-tap-highlight-color:transparent;
+}
+
+img{
+    max-width:100%;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-10;
+    overflow:hidden;
+    pointer-events:none;
+}
+
+.orb{
+    position:absolute;
+    width:550px;
+    height:550px;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.09),
+            transparent 68%
+        );
+
+    filter:blur(35px);
+
+    animation:float 14s infinite alternate ease-in-out;
+}
+
+.orb.one{
+    top:-300px;
+    left:-200px;
+}
+
+.orb.two{
+    right:-250px;
+    bottom:-250px;
+    animation-delay:-6s;
+}
+
+@keyframes float{
+
+    to{
+        transform:
+            translate(120px,80px)
+            scale(1.2);
+    }
+
+}
+
+body.light .orb{
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,0,0,.07),
+            transparent 68%
+        );
+
+}
+
+
+/* =========================================================
+   NOISE
+========================================================= */
+
+.noise{
+    position:fixed;
+    inset:0;
+    z-index:9998;
+    pointer-events:none;
+    opacity:.035;
+
+    background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================================
+   PREMIUM LOGIN
+========================================================= */
+
+.login-overlay{
+
+    position:fixed;
+    inset:0;
+
+    z-index:99999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(255,255,255,.09),
+            transparent 35%
+        ),
+        rgba(0,0,0,.88);
+
+    backdrop-filter:blur(25px);
+
+    opacity:1;
+    visibility:visible;
+
+    transition:
+        opacity .55s ease,
+        visibility .55s ease;
+
+}
+
+body.light .login-overlay{
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(0,0,0,.06),
+            transparent 35%
+        ),
+        rgba(243,243,240,.9);
+
+}
+
+
+/* hidden after successful login */
+
+.login-overlay.hide{
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+
+}
+
+
+/* LOGIN CARD */
+
+.login-box{
+
+    width:min(430px,100%);
+
+    position:relative;
+
+    padding:38px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.105),
+            rgba(255,255,255,.025)
+        );
+
+    border:1px solid rgba(255,255,255,.15);
+
+    box-shadow:
+        0 50px 150px rgba(0,0,0,.65),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+    backdrop-filter:blur(35px);
+
+    overflow:hidden;
+
+    animation:
+        loginIn .8s
+        cubic-bezier(.16,1,.3,1);
+
+}
+
+body.light .login-box{
+
+    background:
+        rgba(255,255,255,.85);
+
+    border-color:
+        rgba(0,0,0,.12);
+
+}
+
+
+/* decorative circles */
+
+.login-box::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:280px;
+    height:280px;
+
+    border-radius:50%;
+
+    border:1px solid var(--border);
+
+    right:-160px;
+    top:-160px;
+
+    pointer-events:none;
+
+}
+
+.login-box::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:150px;
+    height:150px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.08),
+            transparent 70%
+        );
+
+    left:-80px;
+    bottom:-80px;
+
+    pointer-events:none;
+
+}
+
+@keyframes loginIn{
+
+    from{
+        opacity:0;
+        transform:
+            translateY(35px)
+            scale(.94);
+        filter:blur(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:none;
+        filter:none;
+    }
+
+}
+
+
+/* LOGIN TOP */
+
+.login-top{
+
+    position:relative;
+    z-index:2;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:45px;
+
+}
+
+.login-brand{
+
+    font-size:10px;
+
+    letter-spacing:4px;
+
+    color:var(--muted);
+
+}
+
+.secure{
+
+    display:flex;
+    align-items:center;
+
+    gap:7px;
+
+    font-size:9px;
+
+    letter-spacing:1.5px;
+
+    color:var(--muted);
+
+}
+
+.secure-dot{
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:var(--success);
+
+    box-shadow:
+        0 0 12px
+        rgba(119,230,165,.8);
+
+}
+
+
+/* TITLE */
+
+.login-title{
+
+    position:relative;
+    z-index:2;
+
+    font-family:"Playfair Display",serif;
+
+    font-size:
+        clamp(48px,10vw,70px);
+
+    line-height:.9;
+
+    font-weight:500;
+
+    margin-bottom:20px;
+
+}
+
+.login-description{
+
+    position:relative;
+    z-index:2;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.9;
+
+    margin-bottom:30px;
+
+}
+
+
+/* PHONE */
+
+.phone-label{
+
+    position:relative;
+    z-index:2;
+
+    font-size:9px;
+
+    color:var(--muted);
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    margin-bottom:9px;
+
+}
+
+.phone-input{
+
+    position:relative;
+    z-index:2;
+
+    width:100%;
+
+    padding:17px 18px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    outline:none;
+
+    border-radius:12px;
+
+    transition:.3s;
+
+}
+
+.phone-input:focus{
+
+    border-color:
+        rgba(255,255,255,.45);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(255,255,255,.035);
+
+}
+
+
+/* BUTTON */
+
+.login-btn{
+
+    position:relative;
+    z-index:2;
+
+    width:100%;
+
+    margin-top:12px;
+
+    padding:17px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:var(--accent);
+
+    color:var(--bg);
+
+    cursor:pointer;
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    transition:.35s;
+
+}
+
+.login-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 15px 35px
+        rgba(255,255,255,.12);
+
+}
+
+.login-btn:active{
+
+    transform:scale(.98);
+
+}
+
+
+/* ERROR */
+
+.error{
+
+    min-height:20px;
+
+    color:var(--danger);
+
+    font-size:11px;
+
+    margin-top:11px;
+
+    line-height:1.6;
+
+}
+
+
+/* =========================================================
+   OTP
+========================================================= */
+
+.otp-panel{
+    display:none;
+}
+
+.otp-panel.show{
+
+    display:block;
+
+    animation:
+        fadeUp .45s ease both;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+
+    to{
+        opacity:1;
+        transform:none;
+    }
+
+}
+
+
+/* OTP HINT */
+
+.otp-hint{
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    line-height:1.8;
+
+    margin-bottom:20px;
+
+}
+
+
+/* CODE CARD */
+
+.code-display{
+
+    min-height:100px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    font-size:34px;
+
+    letter-spacing:7px;
+
+    font-weight:600;
+
+    margin-bottom:10px;
+
+    overflow:hidden;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.04);
+
+}
+
+.code-display span{
+
+    display:inline-block;
+
+    min-width:24px;
+
+    text-align:center;
+
+    animation:
+        codeIn .5s both;
+
+}
+
+@keyframes codeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(25px)
+            scale(.65);
+
+        filter:blur(8px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+        filter:blur(0);
+
+    }
+
+}
+
+
+/* TIMER */
+
+.code-timer{
+
+    min-height:20px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+
+/* OTP INPUT */
+
+.otp-input{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:16px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    outline:none;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-size:23px;
+
+    letter-spacing:8px;
+
+    transition:.3s;
+
+}
+
+.otp-input:focus{
+
+    border-color:
+        rgba(255,255,255,.45);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(255,255,255,.035);
+
+}
+
+
+/* VERIFY */
+
+.verify-btn{
+
+    width:100%;
+
+    margin-top:11px;
+
+    padding:16px;
+
+    border-radius:12px;
+
+    background:var(--accent);
+
+    color:var(--bg);
+
+    border:0;
+
+    cursor:pointer;
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    transition:.35s;
+
+}
+
+.verify-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.verify-btn:disabled{
+
+    opacity:.35;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+
+/* RESEND */
+
+.resend-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    width:100%;
+
+    margin-top:11px;
+
+    padding:13px;
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    background:transparent;
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    font-size:10px;
+
+    letter-spacing:1.5px;
+
+    transition:.3s;
+
+}
+
+.resend-btn:hover:not(:disabled){
+
+    background:
+        rgba(255,255,255,.06);
+
+}
+
+.resend-btn:disabled{
+
+    opacity:.35;
+
+    cursor:not-allowed;
+
+}
+
+
+/* BACK */
+
+.back-btn{
+
+    display:block;
+
+    margin:18px auto 0;
+
+    background:none;
+
+    border:0;
+
+    color:var(--muted);
+
+    cursor:pointer;
+
+    font-size:11px;
+
+    transition:.3s;
+
+}
+
+.back-btn:hover{
+
+    color:var(--text);
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+
+    z-index:1000;
+
+    padding:20px 6vw;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:
+        rgba(5,5,5,.55);
+
+    backdrop-filter:blur(20px);
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+body.light header{
+
+    background:
+        rgba(243,243,240,.65);
+
+}
+
+.logo{
+
+    font-weight:700;
+
+    letter-spacing:4px;
+
+}
+
+.header-actions{
+
+    display:flex;
+
+    gap:8px;
+
+}
+
+.icon-btn{
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    border:1px solid var(--border);
+
+    background:transparent;
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.icon-btn:hover{
+
+    background:var(--text);
+
+    color:var(--bg);
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    min-height:100vh;
+
+    padding:
+        170px 8vw
+        100px;
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+.hero-grid{
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+        1.25fr .75fr;
+
+    gap:80px;
+
+    align-items:center;
+
+}
+
+.eyebrow{
+
+    font-size:10px;
+
+    letter-spacing:5px;
+
+    color:var(--muted);
+
+    text-transform:uppercase;
+
+    margin-bottom:30px;
+
+}
+
+.hero h1{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:
+        clamp(70px,11vw,165px);
+
+    font-weight:500;
+
+    line-height:.8;
+
+    letter-spacing:-7px;
+
+}
+
+.hero h1 .outline{
+
+    color:transparent;
+
+    -webkit-text-stroke:
+        1px var(--muted);
+
+}
+
+.hero-text{
+
+    max-width:650px;
+
+    margin-top:50px;
+
+    font-size:15px;
+
+    line-height:2;
+
+    color:var(--muted);
+
+}
+
+.hero-btns{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:35px;
+
+    flex-wrap:wrap;
+
+}
+
+.main-btn{
+
+    display:inline-block;
+
+    padding:17px 25px;
+
+    background:var(--text);
+
+    color:var(--bg);
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    transition:.4s;
+
+}
+
+.main-btn:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.outline-btn{
+
+    display:inline-block;
+
+    padding:16px 25px;
+
+    border:1px solid var(--border);
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   HERO IMAGE
+========================================================= */
+
+.hero-image{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:440px;
+
+    margin:auto;
+
+    transform:rotate(3deg);
+
+    transition:.7s;
+
+}
+
+.hero-image:hover{
+
+    transform:
+        rotate(0)
+        translateY(-10px);
+
+}
+
+.hero-image img{
+
+    width:100%;
+
+    display:block;
+
+    aspect-ratio:4/5;
+
+    object-fit:cover;
+
+    filter:
+        grayscale(100%)
+        contrast(1.1);
+
+}
+
+.hero-image::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:20px;
+
+    border:1px solid rgba(255,255,255,.3);
+
+    z-index:2;
+
+}
+
+.hero-image-caption{
+
+    position:absolute;
+
+    bottom:25px;
+    left:25px;
+
+    z-index:3;
+
+    font-size:10px;
+
+    letter-spacing:3px;
+
+}
+
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.marquee{
+
+    overflow:hidden;
+
+    border-top:
+        1px solid var(--border);
+
+    border-bottom:
+        1px solid var(--border);
+
+    padding:22px 0;
+
+    white-space:nowrap;
+
+}
+
+.marquee-track{
+
+    display:inline-flex;
+
+    animation:
+        marquee 22s linear infinite;
+
+}
+
+.marquee span{
+
+    margin:0 30px;
+
+    font-family:"Playfair Display",serif;
+
+    font-size:30px;
+
+    color:var(--muted2);
+
+}
+
+.marquee .dot{
+
+    color:var(--text);
+
+}
+
+@keyframes marquee{
+
+    to{
+        transform:translateX(-50%);
+    }
+
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+section{
+
+    padding:
+        150px 8vw;
+
+}
+
+.section-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:end;
+
+    margin-bottom:70px;
+
+}
+
+.number{
+
+    font-size:10px;
+
+    letter-spacing:4px;
+
+    color:var(--muted);
+
+}
+
+.section-title{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:
+        clamp(55px,8vw,110px);
+
+    font-weight:500;
+
+    line-height:.9;
+
+    letter-spacing:-5px;
+
+}
+
+.section-title span{
+
+    color:var(--muted2);
+
+}
+
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+.about{
+
+    display:grid;
+
+    grid-template-columns:
+        .8fr 1.2fr;
+
+    gap:100px;
+
+}
+
+.quote{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:
+        clamp(35px,4vw,60px);
+
+    line-height:1.05;
+
+}
+
+.quote span{
+
+    color:var(--muted2);
+
+}
+
+.about-text{
+
+    max-width:680px;
+
+    color:var(--muted);
+
+    line-height:2;
+
+    font-size:14px;
+
+}
+
+.about-text p{
+
+    margin-bottom:25px;
+
+}
+
+
+/* =========================================================
+   STATEMENT
+========================================================= */
+
+.statement{
+
+    border-top:
+        1px solid var(--border);
+
+    border-bottom:
+        1px solid var(--border);
+
+    padding:100px 0;
+
+    text-align:center;
+
+}
+
+.statement-text{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:
+        clamp(35px,6vw,80px);
+
+    line-height:1;
+
+    max-width:1100px;
+
+    margin:auto;
+
+}
+
+.statement-text em{
+
+    color:var(--muted);
+
+}
+
+
+/* =========================================================
+   SKILLS
+========================================================= */
+
+.skills{
+
+    border-top:
+        1px solid var(--border);
+
+}
+
+.skill{
+
+    display:grid;
+
+    grid-template-columns:
+        70px 1fr auto;
+
+    padding:34px 0;
+
+    border-bottom:
+        1px solid var(--border);
+
+    align-items:center;
+
+    transition:.4s;
+
+}
+
+.skill:hover{
+
+    padding-left:20px;
+
+}
+
+.skill-num{
+
+    font-size:11px;
+
+    color:var(--muted2);
+
+}
+
+.skill-name{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:
+        clamp(27px,3vw,42px);
+
+}
+
+.skill-level{
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    color:var(--muted);
+
+}
+
+
+/* =========================================================
+   TECH
+========================================================= */
+
+.tech-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:12px;
+
+}
+
+.tech{
+
+    border:
+        1px solid var(--border);
+
+    background:var(--surface);
+
+    padding:30px;
+
+    min-height:150px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    transition:.4s;
+
+}
+
+.tech:hover{
+
+    transform:translateY(-8px);
+
+    background:var(--surface2);
+
+}
+
+.tech i{
+
+    font-size:28px;
+
+}
+
+.tech-name{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:25px;
+
+}
+
+
+/* =========================================================
+   WORK
+========================================================= */
+
+.work-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.work{
+
+    min-height:460px;
+
+    padding:35px;
+
+    background:var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    position:relative;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-end;
+
+    transition:.5s;
+
+}
+
+.work:hover{
+
+    transform:translateY(-10px);
+
+}
+
+.work-image{
+
+    position:absolute;
+
+    inset:0;
+
+    opacity:.3;
+
+    transition:.5s;
+
+}
+
+.work-image img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    filter:grayscale(100%);
+
+}
+
+.work:hover .work-image{
+
+    opacity:.5;
+
+    transform:scale(1.04);
+
+}
+
+.work-content{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.work-number{
+
+    position:absolute;
+
+    top:30px;
+    right:30px;
+
+    color:var(--muted);
+
+    z-index:3;
+
+}
+
+.work-type{
+
+    font-size:9px;
+
+    letter-spacing:3px;
+
+    color:var(--muted);
+
+    text-transform:uppercase;
+
+}
+
+.work h3{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:60px;
+
+    font-weight:500;
+
+    margin-top:10px;
+
+}
+
+.work p{
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-top:10px;
+
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.contact{
+
+    min-height:90vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+}
+
+.contact-title{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:
+        clamp(65px,12vw,165px);
+
+    font-weight:500;
+
+    line-height:.8;
+
+    letter-spacing:-7px;
+
+}
+
+.contact-title span{
+
+    color:var(--muted2);
+
+}
+
+.contact-sub{
+
+    max-width:600px;
+
+    margin:35px auto 0;
+
+    color:var(--muted);
+
+    line-height:1.8;
+
+}
+
+.socials{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin-top:45px;
+
+}
+
+.social{
+
+    width:58px;
+    height:58px;
+
+    border-radius:50%;
+
+    border:
+        1px solid var(--border);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.4s;
+
+}
+
+.social:hover{
+
+    background:var(--text);
+
+    color:var(--bg);
+
+    transform:translateY(-7px);
+
+}
+
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+.music{
+
+    position:fixed;
+
+    bottom:25px;
+    right:25px;
+
+    z-index:5000;
+
+}
+
+.music button{
+
+    width:55px;
+    height:55px;
+
+    border-radius:50%;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        rgba(20,20,20,.7);
+
+    backdrop-filter:blur(15px);
+
+    color:var(--text);
+
+    cursor:pointer;
+
+}
+
+.music-bars{
+
+    display:flex;
+
+    gap:3px;
+
+    align-items:end;
+
+    justify-content:center;
+
+    height:20px;
+
+}
+
+.music-bars span{
+
+    width:3px;
+
+    height:7px;
+
+    background:var(--text);
+
+    animation:
+        bars .8s infinite ease-in-out;
+
+}
+
+.music-bars span:nth-child(2){
+
+    animation-delay:.15s;
+
+}
+
+.music-bars span:nth-child(3){
+
+    animation-delay:.3s;
+
+}
+
+.music-bars span:nth-child(4){
+
+    animation-delay:.45s;
+
+}
+
+.music.paused .music-bars span{
+
+    animation-play-state:paused;
+
+    height:4px;
+
+}
+
+@keyframes bars{
+
+    50%{
+        height:20px;
+    }
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+
+    border-top:
+        1px solid var(--border);
+
+    padding:30px 8vw;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal{
+
+    opacity:0;
+
+    transform:translateY(60px);
+
+    transition:
+        1s cubic-bezier(.16,1,.3,1);
+
+}
+
+.reveal.show{
+
+    opacity:1;
+
+    transform:none;
+
+}
+
+
+/* =========================================================
+   RTL
+========================================================= */
+
+html[dir="rtl"] .hero h1,
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .contact-title{
+
+    letter-spacing:0;
+
+}
+
+html[dir="rtl"] .skill:hover{
+
+    padding-left:0;
+
+    padding-right:20px;
+
+}
+
+html[dir="rtl"] .work-number{
+
+    right:auto;
+
+    left:30px;
+
+}
+
+html[dir="rtl"] .hero-image-caption{
+
+    left:auto;
+
+    right:25px;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:1000px){
+
+    .hero-grid{
+
+        grid-template-columns:
+            1fr .8fr;
+
+        gap:45px;
+
+    }
+
+    .about{
+
+        gap:55px;
+
+    }
+
+    .tech-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:850px){
+
+    header{
+
+        padding:16px 5vw;
+
+    }
+
+    .hero{
+
+        padding:
+            135px 6vw
+            80px;
+
+    }
+
+    .hero-grid{
+
+        grid-template-columns:1fr;
+
+        gap:45px;
+
+    }
+
+    .hero h1{
+
+        font-size:
+            clamp(58px,17vw,105px);
+
+        letter-spacing:-4px;
+
+    }
+
+    .hero-image{
+
+        max-width:320px;
+
+    }
+
+    section{
+
+        padding:
+            100px 6vw;
+
+    }
+
+    .section-top{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:25px;
+
+        margin-bottom:50px;
+
+    }
+
+    .section-title{
+
+        font-size:
+            clamp(48px,13vw,75px);
+
+    }
+
+    .about{
+
+        grid-template-columns:1fr;
+
+        gap:50px;
+
+    }
+
+    .work-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .skill{
+
+        grid-template-columns:
+            45px 1fr;
+
+    }
+
+    .skill-level{
+
+        display:none;
+
+    }
+
+    .tech-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .contact-title{
+
+        font-size:
+            clamp(60px,17vw,105px);
+
+    }
+
+    footer{
+
+        flex-direction:column;
+
+        gap:10px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL
+========================================================= */
+
+@media(max-width:420px){
+
+    .login-box{
+
+        padding:28px 19px;
+
+    }
+
+    .login-title{
+
+        font-size:48px;
+
+    }
+
+    .code-display{
+
+        font-size:27px;
+
+        gap:5px;
+
+        letter-spacing:5px;
+
+    }
+
+    .otp-input{
+
+        font-size:21px;
+
+        letter-spacing:6px;
+
+    }
+
+    .tech-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        transition-duration:.01ms !important;
+
+    }
+
+}
+
+</style>
 </head>
+
+
 <body>
 
-<div id="loader">
-  <canvas id="particles"></canvas>
-  <div class="loader-noise"></div>
-  <div class="loader-center">
-    <div class="loader-mark">MM</div>
-    <div class="loader-name">MAHDI MARMAZI</div>
-    <div class="loader-line"><span></span></div>
-    <div class="loader-welcome">WELCOME TO MY DIGITAL WORLD</div>
-    <div class="loader-meta"><span>DESIGN</span><i></i><span>CODE</span><i></i><span>CREATE</span></div>
-  </div>
-  <div class="loader-corner">EST. 2026</div>
-  <div class="loader-corner left">01 / 01</div>
+
+<div class="background">
+
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+
 </div>
 
-<div class="cursor"></div>
-<div class="cursor-dot"></div>
-<div class="progress"></div>
+<div class="noise"></div>
+
+
+<!-- =========================================================
+     PREMIUM LOGIN
+========================================================= -->
+
+<div
+    class="login-overlay"
+    id="loginOverlay">
+
+    <div class="login-box">
+
+
+        <div class="login-top">
+
+            <div class="login-brand">
+                MM / PRIVATE ACCESS
+            </div>
+
+            <div class="secure">
+
+                <span class="secure-dot"></span>
+
+                SECURE
+
+            </div>
+
+        </div>
+
+
+        <!-- PHONE -->
+
+        <div id="phonePanel">
+
+            <h1
+                class="login-title"
+                data-en="Welcome."
+                data-fa="خوش آمدید.">
+
+                Welcome.
+
+            </h1>
+
+
+            <p
+                class="login-description"
+                data-en="Enter your mobile number to enter Mahdi's private digital world."
+                data-fa="شماره موبایل خود را وارد کنید تا وارد دنیای دیجیتال خصوصی مهدی شوید.">
+
+                Enter your mobile number to enter
+                Mahdi's private digital world.
+
+            </p>
+
+
+            <div
+                class="phone-label"
+                data-en="Mobile number"
+                data-fa="شماره موبایل">
+
+                Mobile number
+
+            </div>
+
+
+            <input
+                id="phoneInput"
+                class="phone-input"
+                type="tel"
+                inputmode="numeric"
+                autocomplete="tel"
+                placeholder="+98 912 000 0000">
+
+
+            <button
+                id="sendCode"
+                class="login-btn"
+                data-en="Continue"
+                data-fa="ادامه">
+
+                Continue
+
+            </button>
+
+
+            <div
+                id="phoneError"
+                class="error">
+            </div>
+
+        </div>
+
+
+        <!-- OTP -->
+
+        <div
+            id="otpPanel"
+            class="otp-panel">
+
+
+            <h1
+                class="login-title"
+                data-en="Verify."
+                data-fa="تأیید.">
+
+                Verify.
+
+            </h1>
+
+
+            <p
+                class="otp-hint"
+                id="otpHint">
+
+                Your verification code is shown below.
+
+            </p>
+
+
+            <div
+                id="codeDisplay"
+                class="code-display">
+            </div>
+
+
+            <div
+                id="codeTimer"
+                class="code-timer">
+            </div>
+
+
+            <input
+                id="otpInput"
+                class="otp-input"
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                maxlength="6"
+                placeholder="••••••">
+
+
+            <button
+                id="verifyBtn"
+                class="verify-btn"
+                data-en="Verify & Enter"
+                data-fa="تأیید و ورود">
+
+                Verify & Enter
+
+            </button>
+
+
+            <button
+                id="resendBtn"
+                class="resend-btn">
+
+                <i class="fa-solid fa-rotate-right"></i>
+
+                <span id="resendText">
+                    Resend code
+                </span>
+
+            </button>
+
+
+            <div
+                id="otpError"
+                class="error">
+            </div>
+
+
+            <button
+                id="backBtn"
+                class="back-btn"
+                data-en="← Change number"
+                data-fa="→ تغییر شماره">
+
+                ← Change number
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header>
-  <a href="#home" class="logo magnetic">MM<span>.</span></a>
-  <div class="status"><i></i> AVAILABLE FOR WORK</div>
-  <button class="menu-btn" aria-label="منو"><span></span><span></span></button>
-  <nav>
-    <a href="#services">خدمات</a>
-    <a href="#work">نمونه‌کار</a>
-    <a href="#about">درباره من</a>
-    <a href="#contact">ارتباط</a>
-  </nav>
+
+    <a href="#" class="logo">
+        MM.
+    </a>
+
+    <div class="header-actions">
+
+        <button
+            class="icon-btn"
+            id="languageBtn">
+
+            EN
+
+        </button>
+
+
+        <button
+            class="icon-btn"
+            id="themeBtn">
+
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+    </div>
+
 </header>
 
-<div class="mobile-menu">
-  <a href="#services">خدمات</a>
-  <a href="#work">نمونه‌کار</a>
-  <a href="#about">درباره من</a>
-  <a href="#contact">ارتباط</a>
-</div>
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
 
 <main>
-<section class="hero" id="home">
-  <div class="noise"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-orbit orbit-a"></div>
-  <div class="hero-orbit orbit-b"></div>
-  <div class="mouse-light"></div>
-  <div class="hero-inner">
-    <div class="eyebrow reveal">WEB DESIGN / DEVELOPMENT / PERSONAL BRAND</div>
-    <h1 class="hero-title reveal"><span>مهدی</span><em>مرمزی.</em></h1>
-    <div class="hero-copy reveal">
-      <p><b>خوش آمدید.</b><br>طراحی می‌کنم، کد می‌زنم و ایده‌ها را به تجربه‌های دیجیتال تبدیل می‌کنم.</p>
-      <div class="scroll-indicator"><span>SCROLL TO EXPLORE</span><i></i><b>↓</b></div>
+
+
+<section class="hero">
+
+<div class="hero-grid">
+
+
+<div>
+
+    <div
+        class="eyebrow"
+        data-en="Programmer · Developer · Creator"
+        data-fa="برنامه‌نویس · توسعه‌دهنده · خالق">
+
+        Programmer · Developer · Creator
+
     </div>
-  </div>
-  <div class="hero-side">MM — 2026</div>
-  <div class="hero-bottom-line"></div>
+
+
+    <h1>
+
+        Mahdi<br>
+
+        <span class="outline">
+            Maramzi
+        </span>
+
+    </h1>
+
+
+    <p
+        class="hero-text"
+        data-en="I build digital experiences with clean code, bold ideas and attention to the details that make a website feel alive."
+        data-fa="من تجربه‌های دیجیتال را با کدنویسی تمیز، ایده‌های متفاوت و توجه به جزئیاتی می‌سازم که یک وب‌سایت را زنده می‌کنند.">
+
+        I build digital experiences with clean code,
+        bold ideas and attention to the details that
+        make a website feel alive.
+
+    </p>
+
+
+    <div class="hero-btns">
+
+        <a
+            href="#work"
+            class="main-btn"
+            data-en="View my work"
+            data-fa="نمونه‌کارها">
+
+            View my work
+
+        </a>
+
+
+        <a
+            href="#contact"
+            class="outline-btn"
+            data-en="Contact me"
+            data-fa="ارتباط با من">
+
+            Contact me
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<div>
+
+    <div class="hero-image">
+
+        <img
+            src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=85"
+            alt="Developer workspace">
+
+        <div class="hero-image-caption">
+
+            MM / 2026
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
 </section>
 
-<section id="services">
-  <div class="section-top reveal"><span>01</span><small>SERVICES</small></div>
-  <div class="section-title reveal"><h2>چیزی بیشتر از<br><i>یک وب‌سایت.</i></h2></div>
-  <div class="service-grid">
-    <article class="service magnetic-card reveal"><span class="number">01</span><div class="service-icon">✦</div><h3>طراحی وب</h3><p>رابط‌های مدرن، مینیمال و لوکس که روی موبایل و دسکتاپ بی‌نقص دیده می‌شوند.</p></article>
-    <article class="service magnetic-card reveal"><span class="number">02</span><div class="service-icon">⌁</div><h3>برنامه‌نویسی</h3><p>تبدیل طراحی و ایده به محصول واقعی، سریع، تمیز و قابل توسعه.</p></article>
-    <article class="service magnetic-card reveal"><span class="number">03</span><div class="service-icon">◌</div><h3>هویت دیجیتال</h3><p>ساخت یک حضور آنلاین متمایز برای برند، شخص یا کسب‌وکار شما.</p></article>
-  </div>
-</section>
 
-<section id="work">
-  <div class="section-top reveal"><span>02</span><small>SELECTED WORK</small></div>
-  <div class="section-title reveal"><h2>کارهایی که<br><i>دیده می‌شوند.</i></h2></div>
-  <div class="work-grid">
-    <article class="work magnetic-card reveal"><div class="work-shape"></div><small>01 / BUSINESS</small><h3>Business<br><span>Website</span></h3><p>01 — BRAND EXPERIENCE</p></article>
-    <article class="work magnetic-card reveal"><div class="work-shape"></div><small>02 / DIGITAL</small><h3>Digital<br><span>Experience</span></h3><p>02 — INTERACTIVE DESIGN</p></article>
-    <article class="work magnetic-card reveal"><div class="work-shape"></div><small>03 / PERSONAL</small><h3>Personal<br><span>Brand</span></h3><p>03 — DIGITAL IDENTITY</p></article>
-    <article class="work magnetic-card reveal"><div class="work-shape"></div><small>04 / WEB APP</small><h3>Web<br><span>Application</span></h3><p>04 — DEVELOPMENT</p></article>
-  </div>
-</section>
+<!-- MARQUEE -->
+
+<div class="marquee">
+
+<div class="marquee-track">
+
+<span>CODE</span>
+<span class="dot">✦</span>
+<span>CREATE</span>
+<span class="dot">✦</span>
+<span>DESIGN</span>
+<span class="dot">✦</span>
+<span>BUILD</span>
+<span class="dot">✦</span>
+
+<span>CODE</span>
+<span class="dot">✦</span>
+<span>CREATE</span>
+<span class="dot">✦</span>
+<span>DESIGN</span>
+<span class="dot">✦</span>
+<span>BUILD</span>
+<span class="dot">✦</span>
+
+</div>
+
+</div>
+
+
+<!-- ABOUT -->
 
 <section id="about">
-  <div class="section-top reveal"><span>03</span><small>ABOUT ME</small></div>
-  <div class="about-grid">
-    <div class="about-big reveal">من به <span>جزئیات</span> اهمیت می‌دهم؛ چون تفاوت بین خوب و عالی، همین‌جاست.</div>
-    <div class="about-copy reveal"><p>من مهدی مرمزی هستم؛ طراح وب‌سایت و برنامه‌نویس. تمرکزم روی ساخت تجربه‌های دیجیتال مدرن، سریع و کاربردی است.</p><p>ترکیب طراحی، کدنویسی و حل مسئله برای من یعنی ساخت محصولی که هم زیبا باشد و هم واقعاً کار کند.</p><div class="mini-stats"><div><b>01</b><span>DESIGN</span></div><div><b>02</b><span>DEVELOP</span></div><div><b>03</b><span>CREATE</span></div></div></div>
-  </div>
+
+<div class="section-top reveal">
+
+    <div class="number">
+        01 / ABOUT
+    </div>
+
+    <h2
+        class="section-title"
+        data-en="Who I am."
+        data-fa="من کی هستم.">
+
+        Who <span>I am.</span>
+
+    </h2>
+
+</div>
+
+
+<div class="about reveal">
+
+    <div class="quote">
+
+        I don't just write code.
+
+        <span>
+            I create experiences.
+        </span>
+
+    </div>
+
+
+    <div class="about-text">
+
+        <p>
+
+            I'm Mahdi Maramzi, a programmer focused
+            on modern web experiences and creative
+            digital products.
+
+        </p>
+
+        <p>
+
+            I believe a great website should not only
+            work perfectly. It should communicate,
+            create trust and leave an impression.
+
+        </p>
+
+        <p>
+
+            That's the kind of work I want my name
+            to be connected with.
+
+        </p>
+
+    </div>
+
+</div>
+
 </section>
 
-<section id="contact" class="contact">
-  <div class="contact-glow"></div>
-  <div class="section-top reveal"><span>04</span><small>CONTACT</small></div>
-  <p class="eyebrow reveal">HAVE A PROJECT IN MIND?</p>
-  <h2 class="contact-title reveal">بیایید چیزی<br><i>متفاوت</i> بسازیم.</h2>
-  <div class="contact-grid reveal">
-    <a href="mailto:iwmahdiprogrammer@gmail.com"><small>EMAIL</small><b>iwmahdiprogrammer@gmail.com</b></a>
-    <a href="tel:09934920508"><small>PHONE</small><b>099XXXXXXXX</b></a>
-    <a href="https://wa.me/989934920508" target="_blank"><small>WHATSAPP</small><b>MESSAGE ME ↗</b></a>
-    <a href="https://instagram.com/lmahdi.mz" target="_blank"><small>INSTAGRAM</small><b>@lmahdi.mz ↗</b></a>
-  </div>
+
+<!-- STATEMENT -->
+
+<section>
+
+<div class="statement reveal">
+
+<div class="statement-text">
+
+Good design gets attention.
+
+<em>
+Great experiences stay.
+</em>
+
+</div>
+
+</div>
+
 </section>
+
+
+<!-- SKILLS -->
+
+<section>
+
+<div class="section-top reveal">
+
+<div class="number">
+02 / SKILLS
+</div>
+
+<h2
+class="section-title"
+data-en="What I build."
+data-fa="چه می‌سازم.">
+
+What <span>I build.</span>
+
+</h2>
+
+</div>
+
+
+<div class="skills reveal">
+
+<div class="skill">
+
+<div class="skill-num">
+01
+</div>
+
+<div class="skill-name">
+Web Development
+</div>
+
+<div class="skill-level">
+FOCUS
+</div>
+
+</div>
+
+
+<div class="skill">
+
+<div class="skill-num">
+02
+</div>
+
+<div class="skill-name">
+Creative UI / UX
+</div>
+
+<div class="skill-level">
+FOCUS
+</div>
+
+</div>
+
+
+<div class="skill">
+
+<div class="skill-num">
+03
+</div>
+
+<div class="skill-name">
+Interactive Websites
+</div>
+
+<div class="skill-level">
+FOCUS
+</div>
+
+</div>
+
+
+<div class="skill">
+
+<div class="skill-num">
+04
+</div>
+
+<div class="skill-name">
+Freelance Projects
+</div>
+
+<div class="skill-level">
+FOCUS
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TECH -->
+
+<section>
+
+<div class="section-top reveal">
+
+<div class="number">
+03 / STACK
+</div>
+
+<h2
+class="section-title">
+
+My <span>tools.</span>
+
+</h2>
+
+</div>
+
+
+<div class="tech-grid reveal">
+
+<div class="tech">
+
+<i class="fa-brands fa-html5"></i>
+
+<div class="tech-name">
+HTML5
+</div>
+
+</div>
+
+
+<div class="tech">
+
+<i class="fa-brands fa-css3-alt"></i>
+
+<div class="tech-name">
+CSS3
+</div>
+
+</div>
+
+
+<div class="tech">
+
+<i class="fa-brands fa-js"></i>
+
+<div class="tech-name">
+JavaScript
+</div>
+
+</div>
+
+
+<div class="tech">
+
+<i class="fa-brands fa-php"></i>
+
+<div class="tech-name">
+PHP
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- WORK -->
+
+<section id="work">
+
+<div class="section-top reveal">
+
+<div class="number">
+04 / WORK
+</div>
+
+<h2
+class="section-title">
+
+Selected <span>work.</span>
+
+</h2>
+
+</div>
+
+
+<div class="work-grid reveal">
+
+
+<article class="work">
+
+<div class="work-number">
+01
+</div>
+
+<div class="work-image">
+
+ <a
+    href="https://iwmahdiprogrammer-debug.github.io/AGEX---MAHDI/"
+    target="_blank"
+    rel="noopener noreferrer"
+>
+    <img
+        src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=85"
+        alt="AGEX Age Calculator"
+    >
+</a>
+
+</div>
+
+<div class="work-content">
+
+<div class="work-type">
+Web Application
+</div>
+
+<h3>
+AGEX
+</h3>
+
+<p>
+A smart digital calculator experience.
+</p>
+
+</div>
+
+</article>
+
+
+<article class="work">
+
+<div class="work-number">
+02
+</div>
+
+<div class="work-image">
+
+<img
+src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1000&q=85"
+alt="Portfolio">
+
+</div>
+
+<div class="work-content">
+
+<div class="work-type">
+Portfolio
+</div>
+
+<h3>
+MM.
+</h3>
+
+<p>
+A personal digital identity.
+</p>
+
+</div>
+
+</article>
+
+
+<article class="work">
+
+<div class="work-number">
+03
+</div>
+
+<div class="work-image">
+
+<img
+src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85"
+alt="LAB">
+
+</div>
+
+<div class="work-content">
+
+<div class="work-type">
+Experimental
+</div>
+
+<h3>
+LAB
+</h3>
+
+<p>
+Experiments in interaction and design.
+</p>
+
+</div>
+
+</article>
+
+
+<article class="work">
+
+<div class="work-number">
+04
+</div>
+
+<div class="work-content">
+
+<div class="work-type">
+Coming Soon
+</div>
+
+<h3>
+NEXT
+</h3>
+
+<p>
+Something new is being built.
+</p>
+
+</div>
+
+</article>
+
+
+</div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section
+id="contact"
+class="contact">
+
+<div class="reveal">
+
+<div class="number">
+05 / CONTACT
+</div>
+
+<h2 class="contact-title">
+
+Let's<br>
+
+<span>
+build.
+</span>
+
+</h2>
+
+
+<p class="contact-sub">
+
+Have an idea, project or collaboration in mind?
+Let's turn it into something real.
+
+</p>
+
+
+<div class="socials">
+
+
+<a
+id="instagram"
+class="social"
+target="_blank"
+rel="noopener"
+aria-label="Instagram">
+
+<i class="fa-brands fa-instagram"></i>
+
+</a>
+
+
+<a
+id="whatsapp"
+class="social"
+target="_blank"
+rel="noopener"
+aria-label="WhatsApp">
+
+<i class="fa-brands fa-whatsapp"></i>
+
+</a>
+
+
+<a
+id="phone"
+class="social"
+aria-label="Phone">
+
+<i class="fa-solid fa-phone"></i>
+
+</a>
+
+
+<a
+id="email"
+class="social"
+aria-label="Email">
+
+<i class="fa-solid fa-envelope"></i>
+
+</a>
+
+
+</div>
+
+</div>
+
+</section>
+
+
 </main>
 
-<footer><span>© 2026 Mahdi Marmazi — All Rights Reserved.</span><span>DESIGNED / CODED / CREATED</span></footer>
-<script src="script.js"></script>
+
+<!-- MUSIC -->
+
+<audio
+id="backgroundMusic"
+loop
+preload="auto">
+
+<source
+src="mahdi.mp3"
+type="audio/mpeg">
+
+</audio>
+
+
+<div
+class="music paused"
+id="musicBox">
+
+<button
+id="musicBtn">
+
+<div class="music-bars">
+
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+
+</div>
+
+</button>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+<div>
+© 2026 Mahdi Maramzi — All Rights Reserved.
+</div>
+
+<div>
+MM / DIGITAL CREATOR
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   CONFIG
+   ========================================================= */
+
+const CONFIG = {
+
+    instagram:
+        "https://instagram.com/lmahdi.mz",
+
+    whatsapp:
+        "https://wa.me/989934920508",
+
+    phone:
+        "tel:+989934920508",
+
+    email:
+        "mailto:iwmahdiprogrammer@gmail.com"
+
+};
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+document.getElementById("instagram").href =
+    CONFIG.instagram;
+
+document.getElementById("whatsapp").href =
+    CONFIG.whatsapp;
+
+document.getElementById("phone").href =
+    CONFIG.phone;
+
+document.getElementById("email").href =
+    CONFIG.email;
+
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+let language =
+    localStorage.getItem("language")
+    || "en";
+
+const languageBtn =
+    document.getElementById("languageBtn");
+
+
+function updateLanguage(){
+
+    const isFA =
+        language === "fa";
+
+
+    document.documentElement.lang =
+        isFA ? "fa" : "en";
+
+
+    document.documentElement.dir =
+        isFA ? "rtl" : "ltr";
+
+
+    document.body.classList.toggle(
+        "rtl",
+        isFA
+    );
+
+
+    document
+    .querySelectorAll("[data-en]")
+    .forEach(element => {
+
+        const value =
+            element.dataset[
+                isFA ? "fa" : "en"
+            ];
+
+        if(value){
+
+            if(value.includes("<")){
+
+                element.innerHTML =
+                    value;
+
+            }else{
+
+                element.textContent =
+                    value;
+
+            }
+
+        }
+
+    });
+
+
+    languageBtn.textContent =
+        isFA ? "EN" : "FA";
+
+
+    document.getElementById(
+        "phoneInput"
+    ).placeholder =
+        isFA
+        ? "0912 000 0000"
+        : "+98 912 000 0000";
+
+
+    updateOtpLanguage();
+
+}
+
+
+languageBtn.addEventListener(
+    "click",
+    ()=>{
+
+        language =
+            language === "en"
+            ? "fa"
+            : "en";
+
+        localStorage.setItem(
+            "language",
+            language
+        );
+
+        updateLanguage();
+
+    }
+);
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+let theme =
+    localStorage.getItem("theme")
+    || "dark";
+
+const themeBtn =
+    document.getElementById("themeBtn");
+
+
+function updateTheme(){
+
+    document.body.classList.toggle(
+        "light",
+        theme === "light"
+    );
+
+
+    themeBtn.innerHTML =
+        theme === "light"
+
+        ? '<i class="fa-solid fa-sun"></i>'
+
+        : '<i class="fa-solid fa-moon"></i>';
+
+}
+
+
+themeBtn.addEventListener(
+    "click",
+    ()=>{
+
+        theme =
+            theme === "dark"
+            ? "light"
+            : "dark";
+
+        localStorage.setItem(
+            "theme",
+            theme
+        );
+
+        updateTheme();
+
+    }
+);
+
+updateTheme();
+
+
+/* =========================================================
+   OTP SYSTEM
+========================================================= */
+
+let generatedCode = "";
+
+let codeExpiresAt = 0;
+
+let timerInterval = null;
+
+let resendTimer = null;
+
+let resendSeconds = 0;
+
+let attempts = 0;
+
+const MAX_ATTEMPTS = 5;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loginOverlay =
+    document.getElementById(
+        "loginOverlay"
+    );
+
+const phonePanel =
+    document.getElementById(
+        "phonePanel"
+    );
+
+const otpPanel =
+    document.getElementById(
+        "otpPanel"
+    );
+
+const phoneInput =
+    document.getElementById(
+        "phoneInput"
+    );
+
+const otpInput =
+    document.getElementById(
+        "otpInput"
+    );
+
+const phoneError =
+    document.getElementById(
+        "phoneError"
+    );
+
+const otpError =
+    document.getElementById(
+        "otpError"
+    );
+
+const codeDisplay =
+    document.getElementById(
+        "codeDisplay"
+    );
+
+const codeTimer =
+    document.getElementById(
+        "codeTimer"
+    );
+
+const otpHint =
+    document.getElementById(
+        "otpHint"
+    );
+
+const verifyBtn =
+    document.getElementById(
+        "verifyBtn"
+    );
+
+const resendBtn =
+    document.getElementById(
+        "resendBtn"
+    );
+
+const resendText =
+    document.getElementById(
+        "resendText"
+    );
+
+
+/* =========================================================
+   GENERATE CODE
+========================================================= */
+
+function generateCode(){
+
+    return String(
+        Math.floor(
+            100000 +
+            Math.random() * 900000
+        )
+    );
+
+}
+
+
+/* =========================================================
+   OTP LANGUAGE
+========================================================= */
+
+function updateOtpLanguage(){
+
+    if(!otpHint) return;
+
+
+    if(language === "fa"){
+
+        otpHint.textContent =
+            "کد تأیید شما در همین صفحه نمایش داده شده است.";
+
+        if(resendSeconds > 0){
+
+            resendText.textContent =
+                `ارسال مجدد (${resendSeconds})`;
+
+        }else{
+
+            resendText.textContent =
+                "ارسال مجدد کد";
+
+        }
+
+    }else{
+
+        otpHint.textContent =
+            "Your verification code is shown below.";
+
+        if(resendSeconds > 0){
+
+            resendText.textContent =
+                `Resend (${resendSeconds})`;
+
+        }else{
+
+            resendText.textContent =
+                "Resend code";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY CODE
+========================================================= */
+
+function renderCode(){
+
+    codeDisplay.innerHTML = "";
+
+
+    generatedCode
+    .split("")
+    .forEach(
+        (number,index)=>{
+
+            const span =
+                document.createElement(
+                    "span"
+                );
+
+            span.textContent =
+                number;
+
+            span.style.animationDelay =
+                `${index * .07}s`;
+
+            codeDisplay.appendChild(
+                span
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CREATE NEW CODE
+========================================================= */
+
+function createNewCode(){
+
+    clearInterval(timerInterval);
+
+
+    generatedCode =
+        generateCode();
+
+
+    codeExpiresAt =
+        Date.now() + 60000;
+
+
+    renderCode();
+
+
+    updateOtpTimer();
+
+
+    timerInterval =
+        setInterval(
+            updateOtpTimer,
+            250
+        );
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function updateOtpTimer(){
+
+    const remaining =
+        Math.max(
+            0,
+            codeExpiresAt - Date.now()
+        );
+
+
+    if(remaining <= 0){
+
+        clearInterval(
+            timerInterval
+        );
+
+
+        codeDisplay.innerHTML =
+            "<span>••••••</span>";
+
+
+        codeTimer.textContent =
+            language === "fa"
+
+            ? "کد منقضی شد."
+
+            : "Code expired.";
+
+        return;
+
+    }
+
+
+    const seconds =
+        Math.ceil(
+            remaining / 1000
+        );
+
+
+    codeTimer.textContent =
+        language === "fa"
+
+        ? `اعتبار کد: ${seconds} ثانیه`
+
+        : `Code expires in ${seconds}s`;
+
+}
+
+
+/* =========================================================
+   RESEND TIMER
+========================================================= */
+
+function startResendCooldown(){
+
+    clearInterval(resendTimer);
+
+
+    resendSeconds = 5;
+
+
+    resendBtn.disabled = true;
+
+
+    updateOtpLanguage();
+
+
+    resendTimer =
+        setInterval(
+            ()=>{
+
+                resendSeconds--;
+
+
+                updateOtpLanguage();
+
+
+                if(
+                    resendSeconds <= 0
+                ){
+
+                    clearInterval(
+                        resendTimer
+                    );
+
+                    resendBtn.disabled =
+                        false;
+
+                    updateOtpLanguage();
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================================
+   NORMALIZE PHONE
+========================================================= */
+
+function normalizePhone(value){
+
+    return value
+        .replace(/[^\d+]/g,"")
+        .replace(/\s/g,"");
+
+}
+
+
+/* =========================================================
+   SEND CODE
+========================================================= */
+
+document
+.getElementById("sendCode")
+.addEventListener(
+    "click",
+    ()=>{
+
+        const phone =
+            normalizePhone(
+                phoneInput.value
+            );
+
+
+        if(
+            phone
+            .replace("+","")
+            .length < 10
+        ){
+
+            phoneError.textContent =
+                language === "fa"
+
+                ? "لطفاً شماره موبایل معتبر وارد کنید."
+
+                : "Please enter a valid mobile number.";
+
+            return;
+
+        }
+
+
+        phoneError.textContent = "";
+
+        otpError.textContent = "";
+
+        attempts = 0;
+
+        verifyBtn.disabled = false;
+
+
+        phonePanel.style.display =
+            "none";
+
+
+        otpPanel.classList.add(
+            "show"
+        );
+
+
+        otpInput.value = "";
+
+
+        createNewCode();
+
+
+        startResendCooldown();
+
+
+        setTimeout(
+            ()=>{
+                otpInput.focus();
+            },
+            300
+        );
+
+    }
+);
+
+
+/* =========================================================
+   RESEND
+========================================================= */
+
+resendBtn.addEventListener(
+    "click",
+    ()=>{
+
+        if(resendBtn.disabled)
+            return;
+
+
+        attempts = 0;
+
+        verifyBtn.disabled = false;
+
+        otpInput.value = "";
+
+        otpError.textContent = "";
+
+
+        createNewCode();
+
+
+        startResendCooldown();
+
+
+        otpInput.focus();
+
+    }
+);
+
+
+/* =========================================================
+   VERIFY
+========================================================= */
+
+verifyBtn.addEventListener(
+    "click",
+    ()=>{
+
+        const entered =
+            otpInput.value.trim();
+
+
+        /* EMPTY */
+
+        if(!entered){
+
+            otpError.textContent =
+                language === "fa"
+
+                ? "کد را وارد کنید."
+
+                : "Enter the verification code.";
+
+            return;
+
+        }
+
+
+        /* EXPIRED */
+
+        if(
+            Date.now() >
+            codeExpiresAt
+        ){
+
+            otpError.textContent =
+                language === "fa"
+
+                ? "کد منقضی شده است. کد جدید بفرستید."
+
+                : "The code expired. Request a new code.";
+
+            return;
+
+        }
+
+
+        /* WRONG CODE */
+
+        if(
+            entered !== generatedCode
+        ){
+
+            attempts++;
+
+
+            const remaining =
+                MAX_ATTEMPTS - attempts;
+
+
+            if(
+                attempts >=
+                MAX_ATTEMPTS
+            ){
+
+                otpError.textContent =
+                    language === "fa"
+
+                    ? "تعداد تلاش‌ها تمام شد. کد جدید بفرستید."
+
+                    : "Too many attempts. Request a new code.";
+
+
+                verifyBtn.disabled =
+                    true;
+
+                return;
+
+            }
+
+
+            otpError.textContent =
+                language === "fa"
+
+                ? `کد اشتباه است. ${remaining} تلاش باقی مانده.`
+
+                : `Wrong code. ${remaining} attempts remaining.`;
+
+
+            otpInput.value = "";
+
+            otpInput.focus();
+
+            return;
+
+        }
+
+
+        /* =================================================
+           SUCCESS
+        ================================================= */
+
+        clearInterval(
+            timerInterval
+        );
+
+        clearInterval(
+            resendTimer
+        );
+
+
+        otpError.textContent = "";
+
+
+        loginOverlay.classList.add(
+            "hide"
+        );
+
+
+        document.body.style.overflow =
+            "auto";
+
+    }
+);
+
+
+/* =========================================================
+   ENTER
+========================================================= */
+
+otpInput.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Enter"
+        ){
+
+            verifyBtn.click();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ONLY NUMBERS
+========================================================= */
+
+otpInput.addEventListener(
+    "input",
+    ()=>{
+
+        otpInput.value =
+            otpInput.value
+            .replace(/\D/g,"")
+            .slice(0,6);
+
+    }
+);
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+document
+.getElementById("backBtn")
+.addEventListener(
+    "click",
+    ()=>{
+
+        clearInterval(
+            timerInterval
+        );
+
+        clearInterval(
+            resendTimer
+        );
+
+
+        otpPanel.classList.remove(
+            "show"
+        );
+
+
+        phonePanel.style.display =
+            "block";
+
+
+        otpInput.value = "";
+
+        otpError.textContent = "";
+
+        phoneError.textContent = "";
+
+
+        phoneInput.focus();
+
+    }
+);
+
+
+/* =========================================================
+   IMPORTANT:
+   NO SESSION STORAGE
+   REFRESH = LOGIN AGAIN
+========================================================= */
+
+function initializeLogin(){
+
+    loginOverlay.classList.remove(
+        "hide"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+initializeLogin();
+
+updateLanguage();
+
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+const music =
+    document.getElementById(
+        "backgroundMusic"
+    );
+
+const musicBtn =
+    document.getElementById(
+        "musicBtn"
+    );
+
+const musicBox =
+    document.getElementById(
+        "musicBox"
+    );
+
+
+let musicEnabled =
+    localStorage.getItem(
+        "musicEnabled"
+    ) === "true";
+
+
+music.volume = .18;
+
+
+function updateMusic(){
+
+    musicBox.classList.toggle(
+        "paused",
+        !musicEnabled
+    );
+
+}
+
+
+async function playMusic(){
+
+    if(!musicEnabled)
+        return;
+
+    try{
+
+        await music.play();
+
+    }catch(error){
+
+    }
+
+}
+
+
+musicBtn.addEventListener(
+    "click",
+    async ()=>{
+
+        musicEnabled =
+            !musicEnabled;
+
+
+        localStorage.setItem(
+            "musicEnabled",
+            musicEnabled
+        );
+
+
+        if(musicEnabled){
+
+            await playMusic();
+
+        }else{
+
+            music.pause();
+
+        }
+
+
+        updateMusic();
+
+    }
+);
+
+
+document.addEventListener(
+    "click",
+    ()=>{
+
+        if(
+            musicEnabled &&
+            music.paused
+        ){
+
+            playMusic();
+
+        }
+
+    },
+    {once:true}
+);
+
+
+updateMusic();
+
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
+
+const observer =
+    new IntersectionObserver(
+        entries => {
+
+            entries.forEach(
+                entry => {
+
+                    if(
+                        entry.isIntersecting
+                    ){
+
+                        entry.target
+                        .classList
+                        .add("show");
+
+                    }
+
+                }
+            );
+
+        },
+        {
+            threshold:.12
+        }
+    );
+
+
+document
+.querySelectorAll(".reveal")
+.forEach(
+    element =>
+        observer.observe(element)
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document.body.style.overflow =
+    "hidden";
+
+</script>
+
 </body>
-</html>
+  </html>
